@@ -100,3 +100,12 @@ The resulting NYC Transit dataset contains the following variables: `r names(nyc
 My data cleaning steps so far are as follows: First, import the NYC Transit data from a csv file by using the `read_csv` function. Second, clean the variable names with the `clean_names` function. Third, retain the required variables with the `select` function. Finally, change the entry variable from character to logical variable by using the `mutate` and `recode` functions.
 
 The resulting dataset has `r nrow(nyctransit_df)` rows and `r ncol(nyctransit_df)` columns. I think the data are tidy because columns are variables; rows are observations; and every value has a cell.
+
+
+Answers to the three questions:
+
+* There are `r distinct(nyctransit_df, station_name, line) %>% nrow()` distinct stations.
+
+* `r filter(nyctransit_df, ada == TRUE) %>% distinct(station_name, line) %>% nrow()` distinct stations are ADA compliant.
+
+* `r filter(nyctransit_df, vending == "NO" & entry == TRUE) %>% nrow() / filter(nyctransit_df, vending == "NO") %>% nrow() * 100`% of station entrances / exits without vending allow entrance.
