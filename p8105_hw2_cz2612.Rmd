@@ -82,3 +82,21 @@ This dataset contains information from the Mr. Trashwheel trash collector in Bal
 * The median number of sports balls found in a dumpster in 2017 was `r trashwheel_df %>% filter(year == 2017) %>% pull(sports_balls) %>% median()`
 * The total precipitation in 2018 was `r precip_df %>% filter(year == 2018) %>% pull(total) %>% sum()` inches.
 
+
+## Problem 2
+
+Read the NYC Transit data. 
+
+```{r nyctransit_df, message = FALSE}
+nyctransit_df = 
+	read_csv("./data/NYC_Transit_Subway_Entrance_And_Exit_Data.csv") %>% 
+	janitor::clean_names() %>% 
+  select(line:entry, vending, ada) %>% 
+	mutate(entry = recode(entry, "YES" = TRUE, "NO" = FALSE))
+```
+
+The resulting NYC Transit dataset contains the following variables: `r names(nyctransit_df)`.
+
+My data cleaning steps so far are as follows: First, import the NYC Transit data from a csv file by using the `read_csv` function. Second, clean the variable names with the `clean_names` function. Third, retain the required variables with the `select` function. Finally, change the entry variable from character to logical variable by using the `mutate` and `recode` functions.
+
+The resulting dataset has `r nrow(nyctransit_df)` rows and `r ncol(nyctransit_df)` columns. I think the data are tidy because columns are variables; rows are observations; and every value has a cell.
