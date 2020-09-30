@@ -124,3 +124,29 @@ nyctransit_reformat_df =
 ```
 
 `r filter(nyctransit_reformat_df, route_number == "A") %>% distinct(station_name, line) %>% nrow()` distinct stations serve the A train. Of the stations that serve the A train, `r filter(nyctransit_reformat_df, route_number == "A" & ada == TRUE) %>% distinct(station_name, line) %>% nrow()` are ADA compliant.
+
+
+## Problem 3
+
+Read and clean the pols data. 
+
+```{r pols_df, message = FALSE}
+pols_df = 
+	read_csv("./data/pols-month.csv") %>% 
+	janitor::clean_names() %>% 
+  separate(mon, into = c("year", "month", "day"), convert = TRUE)  
+
+month_df = 
+	tibble(
+		month = 1:12,
+		month_name = month.name
+	)
+
+pols_df =
+	left_join(pols_df, month_df, by = "month") %>% 
+  select(-month) %>% 
+  select(year, month = month_name, day, everything()) %>% 
+  mutate(president = case_when(prez_gop == 1 ~ "gop", prez_dem == 1 ~ "dem")) %>% 
+  select(-prez_dem, -prez_gop) %>% 
+  select(-day)
+```
