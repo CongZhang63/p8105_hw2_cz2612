@@ -99,7 +99,7 @@ The resulting NYC Transit dataset contains the following variables: `r names(nyc
 
 My data cleaning steps so far are as follows: First, import the NYC Transit data from a csv file by using the `read_csv` function. Second, clean the variable names with the `clean_names` function. Third, retain the required variables with the `select` function. Finally, change the entry variable from character to logical variable by using the `mutate` and `recode` functions.
 
-The resulting dataset has `r nrow(nyctransit_df)` rows and `r ncol(nyctransit_df)` columns. I think the data are tidy because columns are variables; rows are observations; and every value has a cell.
+The resulting dataset has `r nrow(nyctransit_df)` rows and `r ncol(nyctransit_df)` columns. I don't  think the data are tidy because the columns from route1 to route11 have mixed information. These variable names (route1 to route11) are actually route names, and the variable values are actually route numbers. Therefore, the data should be converted to a long format, separating the information into two variables, in order to become a more tidy dataset.
 
 
 Answers to the three questions:
@@ -109,3 +109,18 @@ Answers to the three questions:
 * `r filter(nyctransit_df, ada == TRUE) %>% distinct(station_name, line) %>% nrow()` distinct stations are ADA compliant.
 
 * `r filter(nyctransit_df, vending == "NO" & entry == TRUE) %>% nrow() / filter(nyctransit_df, vending == "NO") %>% nrow() * 100`% of station entrances / exits without vending allow entrance.
+
+
+Reformat the data.
+
+```{r nyctransit_reformat_df}
+nyctransit_reformat_df =
+  mutate_at(nyctransit_df, vars(route1:route11), as.character) %>% 
+  pivot_longer(
+    route1:route11,
+    names_to = "route_name",
+    values_to = "route_number"
+  )
+```
+
+`r filter(nyctransit_reformat_df, route_number == "A") %>% distinct(station_name, line) %>% nrow()` distinct stations serve the A train. Of the stations that serve the A train, `r filter(nyctransit_reformat_df, route_number == "A" & ada == TRUE) %>% distinct(station_name, line) %>% nrow()` are ADA compliant.
