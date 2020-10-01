@@ -91,7 +91,7 @@ Read the NYC Transit data.
 nyctransit_df = 
 	read_csv("./data/NYC_Transit_Subway_Entrance_And_Exit_Data.csv") %>% 
 	janitor::clean_names() %>% 
-  select(line:entry, vending, ada) %>% 
+	select(line:entry, vending, ada) %>% 
 	mutate(entry = recode(entry, "YES" = TRUE, "NO" = FALSE))
 ```
 
@@ -134,7 +134,7 @@ Read and clean the pols data.
 pols_df = 
 	read_csv("./data/pols-month.csv") %>% 
 	janitor::clean_names() %>% 
-  separate(mon, into = c("year", "month", "day"), convert = TRUE)  
+	separate(mon, into = c("year", "month", "day"), convert = TRUE)  
 
 month_df = 
 	tibble(
@@ -144,9 +144,34 @@ month_df =
 
 pols_df =
 	left_join(pols_df, month_df, by = "month") %>% 
-  select(-month) %>% 
-  select(year, month = month_name, day, everything()) %>% 
-  mutate(president = case_when(prez_gop == 1 ~ "gop", prez_dem == 1 ~ "dem")) %>% 
-  select(-prez_dem, -prez_gop) %>% 
-  select(-day)
+	select(-month) %>% 
+	select(year, month = month_name, day, everything()) %>% 
+	mutate(president = case_when(prez_gop == 1 ~ "gop", prez_dem == 1 ~ "dem")) %>% 
+	select(-prez_dem, -prez_gop) %>% 
+	select(-day) %>% 
+	arrange(year, month)
 ```
+
+
+Read and clean the snp data. 
+
+```{r snp_df, message = FALSE}
+snp_df = 
+	read_csv("./data/snp.csv") %>% 
+	janitor::clean_names() %>% 
+	separate(date, into = c("month", "day", "year"), convert = TRUE)  
+
+month_df = 
+	tibble(
+		month = 1:12,
+		month_name = month.name
+	)
+
+snp_df =
+	left_join(snp_df, month_df, by = "month") %>% 
+	select(-month) %>% 
+	select(year, month = month_name, day, everything()) %>% 
+	select(-day) %>% 
+	arrange(year, month)
+```
+
