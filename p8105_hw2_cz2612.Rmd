@@ -99,7 +99,7 @@ The resulting NYC Transit dataset contains the following variables: `r names(nyc
 
 My data cleaning steps so far are as follows: First, import the NYC Transit data from a csv file by using the `read_csv` function. Second, clean the variable names with the `clean_names` function. Third, retain the required variables with the `select` function. Finally, change the entry variable from character to logical variable by using the `mutate` and `recode` functions.
 
-The resulting dataset has `r nrow(nyctransit_df)` rows and `r ncol(nyctransit_df)` columns. I don't  think the data are tidy because the columns from route1 to route11 have mixed information. These variable names (route1 to route11) are actually route names, and the variable values are actually route numbers. Therefore, the data should be converted to a long format, separating the information into two variables, in order to become a more tidy dataset.
+The resulting dataset has `r nrow(nyctransit_df)` rows and `r ncol(nyctransit_df)` columns, and the dimension is `r nrow(nyctransit_df)` x `r ncol(nyctransit_df)`. I don't  think the data are tidy because the columns from route1 to route11 have mixed information. These variable names (route1 to route11) are actually route names, and the variable values are actually route numbers. Therefore, the data should be converted to a long format, separating the information into two variables, in order to become a more tidy dataset.
 
 
 Answers to the three questions:
@@ -192,7 +192,7 @@ unemployment_df =
 	  month = as.factor(month),
 	  month = month.name[month]
 	) %>% 
-  arrange(year, month)
+	arrange(year, month)
 ```
 
 
@@ -208,3 +208,10 @@ pols_snp_unemployment_df =
   arrange(year, month)
 ```
 
+The cleaned dataset `pols_df` contains the following variables: `r names(pols_df)`. It has `r nrow(pols_df)` rows and `r ncol(pols_df)` columns, and the dimension is `r nrow(pols_df)` x `r ncol(pols_df)`. Its range of years is (`r range(pull(pols_df, year))`). Its key variables are year and month.
+
+The cleaned dataset `snp_df` contains the following variables: `r names(snp_df)`. It has `r nrow(snp_df)` rows and `r ncol(snp_df)` columns, and the dimension is `r nrow(snp_df)` x `r ncol(snp_df)`. Its range of years is (`r range(pull(snp_df, year))`). Its key variables are year and month.
+
+The cleaned dataset `unemployment_df` contains the following variables: `r names(unemployment_df)`. It has `r nrow(unemployment_df)` rows and `r ncol(unemployment_df)` columns, and the dimension is `r nrow(unemployment_df)` x `r ncol(unemployment_df)`. Its range of years is (`r range(pull(unemployment_df, year))`). Its key variables are year and month.
+
+The resulting dataset `pols_snp_unemployment_df` contains the following variables: `r names(pols_snp_unemployment_df)`. It has `r nrow(pols_snp_unemployment_df)` rows and `r ncol(pols_snp_unemployment_df)` columns, and the dimension is `r nrow(pols_snp_unemployment_df)` x `r ncol(pols_snp_unemployment_df)`. Its range of years is (`r range(pull(pols_snp_unemployment_df, year))`). Its key variables are year and month.
